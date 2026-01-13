@@ -1,65 +1,168 @@
-import Image from "next/image";
 
-export default function Home() {
+import React from 'react';
+import Header from '@/components/Header';
+import Navbar from '@/components/Navbar';
+import StaffCard from '@/components/StaffCard';
+import Sidebar from '@/components/Sidebar';
+import SystemSection from '@/components/SystemSection';
+import ScheduleGrid from '@/components/ScheduleGrid';
+import { STAFF_LIST, NEWS_LIST } from '@/constants';
+
+const App: React.FC = () => {
+  const workingToday = STAFF_LIST.filter(s => s.status !== 'off-duty');
+  const onHolidayToday = STAFF_LIST.filter(s => s.status === 'off-duty');
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="min-h-screen pb-12">
+      <Header />
+      <Navbar />
+      
+      {/* Ticker */}
+      <div className="bg-pink-600 text-white py-2 overflow-hidden whitespace-nowrap border-b border-pink-400">
+        <div className="marquee-content font-bold text-sm">
+          🌟 新規キャスト入店キャンペーン実施中！指名料無料！ 🌟 2025年も極上の癒やしを... 🌟 宇都宮エリアNo.1の満足度を目指します！ 🌟 
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+      </div>
+
+      <main className="max-w-6xl mx-auto px-4 mt-8 space-y-12">
+        <div className="flex flex-col lg:flex-row gap-8">
+          
+          {/* Main Column */}
+          <div className="flex-1 space-y-12">
+            
+            {/* Real-time Attendance Status */}
+            <section id="status">
+              <div className="flex items-center gap-2 mb-6">
+                <span className="bg-red-500 text-white px-2 py-1 text-xs font-bold rounded animate-pulse">LIVE</span>
+                <h2 className="text-xl font-serif font-bold text-pink-700">在籍キャスト出勤状況</h2>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 overflow-x-auto pb-4">
+                {workingToday.map((staff) => (
+                  <div key={staff.id} className="min-w-[150px] relative group cursor-pointer">
+                    <div className="relative rounded-lg overflow-hidden shadow-md border-2 border-pink-100">
+                      <img src={staff.imageUrl} alt="" className="w-full aspect-square object-cover" />
+                      <div className="absolute inset-x-0 bottom-0 bg-black/60 p-2 text-center">
+                        <p className="text-xs text-white font-bold mb-1">{staff.name.split(' ')[0]}</p>
+                        <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold shadow-sm ${
+                          staff.status === 'available' ? 'bg-green-500 text-white' : 
+                          staff.status === 'waiting' ? 'bg-red-500 text-white' : 'bg-pink-400 text-white'
+                        }`}>
+                          {staff.status === 'available' ? '即案内OK' : staff.status === 'waiting' ? staff.waitingTime : '案内中'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* System Information */}
+            <SystemSection />
+
+            {/* News Section */}
+            <section id="news" className="bg-white p-6 rounded-xl shadow-sm border border-pink-100">
+              <h2 className="text-xl font-serif font-bold text-pink-700 mb-4 pb-2 border-b border-pink-100">新着情報 & お知らせ</h2>
+              <div className="space-y-4 h-48 overflow-y-auto pr-2 custom-scrollbar">
+                {NEWS_LIST.map((news) => (
+                  <div key={news.id} className="border-b border-pink-50 pb-3 last:border-0">
+                    <div className="flex items-center gap-3 mb-1">
+                      <span className="text-xs text-pink-400 font-mono">{news.date}</span>
+                      <span className="bg-pink-100 text-pink-600 text-[10px] px-1.5 rounded font-bold">INFO</span>
+                    </div>
+                    <h3 className="text-sm font-bold text-gray-800">{news.title}</h3>
+                    <p className="text-xs text-gray-500 mt-1">{news.content}</p>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Staff Grid */}
+            <section id="staff">
+              <h2 className="text-2xl font-serif font-bold text-white bg-pink-500 px-6 py-3 rounded-t-xl text-center shadow">本日の出勤予定</h2>
+              <div className="bg-pink-50 p-6 rounded-b-xl border-x border-b border-pink-200">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {workingToday.map((staff) => (
+                    <StaffCard key={staff.id} staff={staff} />
+                  ))}
+                </div>
+              </div>
+            </section>
+
+            {/* Schedule Table */}
+            <ScheduleGrid staffList={STAFF_LIST} />
+
+            {/* Today's Holiday */}
+            {onHolidayToday.length > 0 && (
+              <section className="bg-white/50 p-6 rounded-xl border-2 border-dashed border-pink-200">
+                <h3 className="text-sm font-bold text-pink-400 text-center mb-6 uppercase tracking-widest">本日のお休み</h3>
+                <div className="flex flex-wrap justify-center gap-6 opacity-60">
+                  {onHolidayToday.map(staff => (
+                    <div key={staff.id} className="text-center group">
+                      <img src={staff.imageUrl} alt="" className="w-20 h-20 rounded-full object-cover grayscale mb-2 border-2 border-gray-200" />
+                      <p className="text-xs font-bold text-gray-500">{staff.name.split(' ')[0]}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+          </div>
+
+          {/* Sidebar Column */}
+          <div className="w-full lg:w-72 space-y-8">
+            <Sidebar />
+            
+            {/* Recruit Banner */}
+            <div className="bg-gradient-to-br from-pink-500 to-rose-600 p-6 rounded-xl text-white text-center shadow-lg transform transition-transform hover:rotate-1">
+              <h3 className="text-xl font-bold mb-2">キャスト大募集！</h3>
+              <p className="text-xs mb-4 opacity-90">未経験者歓迎・高収入<br/>あなたの個性を活かしませんか？</p>
+              <button className="bg-white text-pink-600 font-bold py-2 px-6 rounded-full text-sm hover:bg-pink-50">詳細はこちら</button>
+            </div>
+            
+            {/* Promotion Box */}
+            <div className="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+              <h4 className="text-yellow-700 font-bold text-sm mb-2">✨ 特別イベント</h4>
+              <p className="text-xs text-yellow-600 leading-relaxed">
+                雨の日限定！<br/>60分以上のコースで<br/><strong>1,000円割引</strong>サービス中！
+              </p>
+            </div>
+          </div>
+
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="mt-20 bg-pink-900 text-white py-12">
+        <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
+          <div>
+            <h2 className="text-3xl font-serif font-bold mb-4">極楽浄土</h2>
+            <p className="text-xs text-pink-300 leading-relaxed">
+              当店は宇都宮エリアで最高級の癒やしを提供するデリバリー型リラクゼーションサービスです。
+              熟練の技術と真心で、極上のひとときをお約束いたします。
+            </p>
+          </div>
+          <div className="flex flex-col gap-2">
+            <h3 className="font-bold border-b border-pink-800 pb-2 mb-2">Content</h3>
+            <a href="#system" className="text-sm text-pink-200 hover:text-white">ご利用料金</a>
+            <a href="#staff" className="text-sm text-pink-200 hover:text-white">在籍キャスト</a>
+            <a href="#schedule" className="text-sm text-pink-200 hover:text-white">出勤カレンダー</a>
+            <a href="#" className="text-sm text-pink-200 hover:text-white">キャスト募集</a>
+          </div>
+          <div>
+            <h3 className="font-bold border-b border-pink-800 pb-2 mb-2">Location</h3>
+            <p className="text-sm text-pink-200">栃木県宇都宮市本町XXXX</p>
+            <p className="text-sm text-pink-200 mt-2">TEL: 028-XXX-XXXX</p>
+            <div className="mt-6 p-2 bg-white/10 rounded text-[10px] text-pink-100 italic">
+              ※当店は性的なサービスを目的とした店舗ではありません。
+            </div>
+          </div>
+        </div>
+        <div className="text-center mt-12 text-[10px] text-pink-500 tracking-widest uppercase">
+          &copy; 2025 GOKURAKU JODO ALL RIGHTS RESERVED.
+        </div>
+      </footer>
     </div>
   );
-}
+};
+
+export default App;
