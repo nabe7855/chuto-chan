@@ -1,4 +1,3 @@
-
 export interface Staff {
   id: string;
   name: string;
@@ -10,7 +9,7 @@ export interface Staff {
   tags: string[];
   imageUrl: string;
   isNew?: boolean;
-  status: 'available' | 'waiting' | 'in-session' | 'off-duty';
+  status: "available" | "waiting" | "in-session" | "off-duty";
   waitingTime?: string;
   prices: {
     duration: number;
@@ -20,6 +19,7 @@ export interface Staff {
     day: string;
     time: string;
   }[];
+  message?: string;
 }
 
 export interface News {
@@ -35,4 +35,5 @@ export interface BlogEntry {
   title: string;
   date: string;
   imageUrl: string;
+  content: string;
 }
