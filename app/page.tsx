@@ -70,7 +70,7 @@ const App: React.FC = () => {
                           }`}
                         >
                           {staff.status === "available"
-                            ? "即案内OK"
+                            ? "本日案内OK"
                             : staff.status === "waiting"
                             ? staff.waitingTime
                             : "案内中"}

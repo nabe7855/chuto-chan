@@ -46,7 +46,7 @@ const StaffCard: React.FC<StaffCardProps> = ({ staff, onClick }) => {
           )}
           {staff.status === "available" && (
             <span className="bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow">
-              即案内OK
+              本日案内OK
             </span>
           )}
         </div>
