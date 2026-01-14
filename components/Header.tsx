@@ -8,7 +8,7 @@ const Header: React.FC = () => {
         <div className="text-center md:text-left">
           <h1 className="text-4xl font-serif font-bold text-pink-600 tracking-widest flex items-center justify-center md:justify-start">
             <span className="text-5xl mr-2">極楽浄土</span>
-            <span className="text-sm font-sans font-normal text-pink-400 block md:inline mt-2 md:mt-0">宇都宮・デリヘル</span>
+            <span className="text-sm font-sans font-normal text-pink-400 block md:inline mt-2 md:mt-0">東京・デリヘル</span>
           </h1>
         </div>
         

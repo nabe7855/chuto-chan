@@ -205,7 +205,7 @@ const App: React.FC = () => {
           <div>
             <h2 className="text-3xl font-serif font-bold mb-4">極楽浄土</h2>
             <p className="text-xs text-pink-300 leading-relaxed">
-              当店は宇都宮エリアで最高級の癒やしを提供するデリバリー型リラクゼーションサービスです。
+              当店は東京エリアで最高級の癒やしを提供するデリバリー型リラクゼーションサービスです。
               熟練の技術と真心で、極上のひとときをお約束いたします。
             </p>
           </div>
